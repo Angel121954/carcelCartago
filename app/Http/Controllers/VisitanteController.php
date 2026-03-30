@@ -37,10 +37,21 @@ class VisitanteController extends Controller
      */
     public function store(VisitanteRequest $request): RedirectResponse
     {
+        // Verificar si ya existe un visitante con el mismo número de identificación
+        $visitanteExistente = Visitante::where('numero_identificacion', $request->numero_identificacion)->first();
+
+        if ($visitanteExistente) {
+            return back()
+                ->withInput()
+                ->with('duplicado_id', $visitanteExistente->id)
+                ->with('duplicado_nombre', $visitanteExistente->nombre_completo)
+                ->with('duplicado_numero', $visitanteExistente->numero_identificacion);
+        }
+
         Visitante::create($request->validated());
 
         return Redirect::route('visitantes.index')
-            ->with('success', 'Visitante created successfully.');
+            ->with('success', 'Visitante registrado exitosamente.');
     }
 
     /**
@@ -48,7 +59,7 @@ class VisitanteController extends Controller
      */
     public function show($id): View
     {
-        $visitante = Visitante::find($id);
+        $visitante = Visitante::findOrFail($id);
 
         return view('visitante.show', compact('visitante'));
     }
@@ -58,7 +69,7 @@ class VisitanteController extends Controller
      */
     public function edit($id): View
     {
-        $visitante = Visitante::find($id);
+        $visitante = Visitante::findOrFail($id);
 
         return view('visitante.edit', compact('visitante'));
     }
@@ -71,14 +82,39 @@ class VisitanteController extends Controller
         $visitante->update($request->validated());
 
         return Redirect::route('visitantes.index')
-            ->with('success', 'Visitante updated successfully');
+            ->with('success', 'Visitante actualizado exitosamente.');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id): RedirectResponse
     {
-        Visitante::find($id)->delete();
+        Visitante::findOrFail($id)->delete();
 
         return Redirect::route('visitantes.index')
-            ->with('success', 'Visitante deleted successfully');
+            ->with('success', 'Visitante eliminado exitosamente.');
+    }
+
+    /**
+     * Verificar si un número de identificación ya está registrado (AJAX).
+     */
+    public function checkDuplicado(Request $request)
+    {
+        $request->validate(['numero_identificacion' => 'required|string']);
+
+        $visitante = Visitante::where('numero_identificacion', $request->numero_identificacion)->first();
+
+        if ($visitante) {
+            return response()->json([
+                'duplicado' => true,
+                'id'        => $visitante->id,
+                'nombre'    => $visitante->nombre_completo,
+                'numero'    => $visitante->numero_identificacion,
+                'relacion'  => $visitante->relacion,
+            ]);
+        }
+
+        return response()->json(['duplicado' => false]);
     }
 }

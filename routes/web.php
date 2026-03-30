@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\VisitaController;
 use App\Http\Controllers\GuardiaController;
 use App\Http\Controllers\VisitanteController;
@@ -18,9 +19,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     // Rutas para prisioneros
     Route::resource('prisioneros', PrisioneroController::class);
+
+    // Rutas para visitantes (resource + ruta AJAX para verificar duplicados)
+    Route::get('visitantes/check-duplicado', [VisitanteController::class, 'checkDuplicado'])
+        ->name('visitantes.check-duplicado');
     Route::resource('visitantes', VisitanteController::class);
+
+    // Rutas para guardias y visitas
     Route::resource('guardias', GuardiaController::class);
     Route::resource('visitas', VisitaController::class);
 });
