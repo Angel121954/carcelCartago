@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 /**
  * Class Prisionero
@@ -22,7 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Prisionero extends Model
 {
-    
+    use HasFactory;
+
     protected $perPage = 20;
 
     /**
@@ -38,7 +41,6 @@ class Prisionero extends Model
      */
     public function visitas()
     {
-        return $this->hasMany(\App\Models\Visita::class, 'id', 'prisionero_id');
+        return $this->hasMany(\App\Models\Visita::class, 'prisionero_id', 'id');
     }
-    
 }

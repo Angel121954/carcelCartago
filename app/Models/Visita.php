@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Visita
@@ -25,7 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Visita extends Model
 {
-    
+    use HasFactory;
+
     protected $perPage = 20;
 
     /**
@@ -43,7 +45,7 @@ class Visita extends Model
     {
         return $this->belongsTo(\App\Models\Guardia::class, 'guardia_id', 'id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -51,7 +53,7 @@ class Visita extends Model
     {
         return $this->belongsTo(\App\Models\Prisionero::class, 'prisionero_id', 'id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -59,5 +61,4 @@ class Visita extends Model
     {
         return $this->belongsTo(\App\Models\Visitante::class, 'visitante_id', 'id');
     }
-    
 }
