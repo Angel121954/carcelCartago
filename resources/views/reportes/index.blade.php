@@ -31,12 +31,12 @@
                         </div>
                     </div>
 
-                    <div style="margin-top:24px; display:flex; flex-direction:column; gap:12px; width:100%; max-width:520px;">
-                        <button type="submit" style="display:block; width:100%; background:#4f46e5; color:#fff; border:0; border-radius:8px; padding:12px 16px; font-weight:700; cursor:pointer;">Aplicar filtros</button>
-                        <a href="{{ route('admin.reportes.pdf.view', request()->query()) }}" target="_blank" style="display:block; width:100%; text-align:center; background:#b91c1c; color:#fff; border:1px solid #b91c1c; border-radius:8px; padding:12px 16px; font-weight:700; text-decoration:none;">Ver PDF</a>
-                        <a href="{{ route('admin.reportes.pdf', request()->query()) }}" style="display:block; width:100%; text-align:center; background:#dc2626; color:#fff; border:1px solid #dc2626; border-radius:8px; padding:12px 16px; font-weight:700; text-decoration:none;">Descargar PDF</a>
-                        <a href="{{ route('admin.reportes.excel.view', request()->query()) }}" target="_blank" style="display:block; width:100%; text-align:center; background:#15803d; color:#fff; border:1px solid #15803d; border-radius:8px; padding:12px 16px; font-weight:700; text-decoration:none;">Ver Excel</a>
-                        <a href="{{ route('admin.reportes.excel', request()->query()) }}" style="display:block; width:100%; text-align:center; background:#16a34a; color:#fff; border:1px solid #15803d; border-radius:8px; padding:12px 16px; font-weight:700; text-decoration:none;">Descargar Excel</a>
+                    <div style="margin-top:20px; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; width:100%;">
+                        <button type="submit" style="display:block; width:100%; background:#4f46e5; color:#fff; border:0; border-radius:8px; padding:10px 14px; font-weight:600; cursor:pointer;">Aplicar filtros</button>
+                        <a href="{{ route('admin.reportes.pdf.view', request()->query()) }}" target="_blank" style="display:block; width:100%; text-align:center; background:#b91c1c; color:#fff; border:1px solid #b91c1c; border-radius:8px; padding:10px 14px; font-weight:600; text-decoration:none;">Ver PDF</a>
+                        <a href="{{ route('admin.reportes.pdf', request()->query()) }}" style="display:block; width:100%; text-align:center; background:#dc2626; color:#fff; border:1px solid #dc2626; border-radius:8px; padding:10px 14px; font-weight:600; text-decoration:none;">Descargar PDF</a>
+                        <a href="{{ route('admin.reportes.excel.view', request()->query()) }}" target="_blank" style="display:block; width:100%; text-align:center; background:#15803d; color:#fff; border:1px solid #15803d; border-radius:8px; padding:10px 14px; font-weight:600; text-decoration:none;">Ver Excel</a>
+                        <a href="{{ route('admin.reportes.excel', request()->query()) }}" style="display:block; width:100%; text-align:center; background:#16a34a; color:#fff; border:1px solid #15803d; border-radius:8px; padding:10px 14px; font-weight:600; text-decoration:none; grid-column: span 2;">Descargar Excel</a>
                     </div>
                 </form>
             </div>

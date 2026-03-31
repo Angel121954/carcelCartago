@@ -6,62 +6,62 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-full mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="w-full">
-                    <div class="sm:flex sm:items-center">
-                        <div class="sm:flex-auto">
-                            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('Guardias') }}</h1>
-                        </div>
-                        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                            <a type="button" href="{{ route('admin.guardias.create') }}" class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">New guard</a>
-                        </div>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px;">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">{{ __('Guardias') }}</h1>
+                        <p class="text-sm text-gray-500">Administracion de perfiles de guardias</p>
                     </div>
 
-                    <div class="flow-root">
-                        <div class="mt-8 overflow-x-auto">
-                            <div class="inline-block min-w-full py-2 align-middle">
-                                <table class="w-full divide-y divide-gray-300">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">No</th>
+                    <a href="{{ route('admin.guardias.create') }}" style="display:inline-flex; align-items:center; justify-content:center; background:#dc2626; color:#fff; padding:12px 18px; border-radius:10px; font-weight:700; text-decoration:none; box-shadow:0 8px 16px rgba(220,38,38,.18);">
+                        + Nuevo guardia
+                    </a>
+                </div>
 
-                                            <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Nombre Completo</th>
-                                            <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Numero Identificacion</th>
-                                            <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Activo</th>
+                <div class="overflow-x-auto" style="border:1px solid #e5e7eb; border-radius:12px;">
+                    <table class="w-full" style="border-collapse:collapse; table-layout:auto;">
+                        <thead>
+                            <tr style="background:#f3f4f6; color:#111827;">
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">No</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">Nombre Completo</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">Numero Identificacion</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">Activo</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide" style="width:1%; white-space:nowrap;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($guardias as $guardia)
+                                <tr style="border-top:1px solid #e5e7eb;">
+                                    <td class="py-4 px-4 text-sm font-semibold text-gray-900">{{ ++$i }}</td>
+                                    <td class="py-4 px-4 text-sm text-gray-900">{{ $guardia->nombre_completo }}</td>
+                                    <td class="py-4 px-4 text-sm text-gray-900">{{ $guardia->numero_identificacion }}</td>
+                                    <td class="py-4 px-4 text-sm text-gray-900">
+                                        @if ($guardia->activo)
+                                            <span style="display:inline-flex; padding:6px 10px; border-radius:9999px; background:#dcfce7; color:#166534; font-weight:700; font-size:12px;">Activo</span>
+                                        @else
+                                            <span style="display:inline-flex; padding:6px 10px; border-radius:9999px; background:#fee2e2; color:#991b1b; font-weight:700; font-size:12px;">Inactivo</span>
+                                        @endif
+                                    </td>
+                                    <td class="py-4 px-4 text-sm" style="width:1%; white-space:nowrap;">
+                                        <div style="display:inline-flex; flex-wrap:nowrap; gap:8px; align-items:center;">
+                                            <a href="{{ route('admin.guardias.show', $guardia->id) }}" style="background:#e5e7eb; color:#111827; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:600;">Ver</a>
+                                            <a href="{{ route('admin.guardias.edit', $guardia->id) }}" style="background:#2563eb; color:#fff; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:600;">Editar</a>
+                                            <form action="{{ route('admin.guardias.destroy', $guardia->id) }}" method="POST" style="display:inline; margin:0;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" style="background:#dc2626; color:#fff; padding:8px 12px; border:0; border-radius:8px; font-weight:600; cursor:pointer;" onclick="return confirm('Are you sure to delete?')">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
-                                            <th scope="col" class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200 bg-white">
-                                        @foreach ($guardias as $guardia)
-                                        <tr class="even:bg-gray-50">
-                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-gray-900">{{ ++$i }}</td>
-
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $guardia->nombre_completo }}</td>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $guardia->numero_identificacion }}</td>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $guardia->activo }}</td>
-
-                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
-                                                <form action="{{ route('admin.guardias.destroy', $guardia->id) }}" method="POST">
-                                                    <a href="{{ route('admin.guardias.show', $guardia->id) }}" class="text-gray-600 font-bold hover:text-gray-900 mr-2">{{ __('Show') }}</a>
-                                                    <a href="{{ route('admin.guardias.edit', $guardia->id) }}" class="text-indigo-600 font-bold hover:text-indigo-900  mr-2">{{ __('Edit') }}</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <a href="{{ route('admin.guardias.destroy', $guardia->id) }}" class="text-red-600 font-bold hover:text-red-900" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">{{ __('Delete') }}</a>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
-                                <div class="mt-4 px-4">
-                                    {!! $guardias->withQueryString()->links() !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="mt-4">
+                    {!! $guardias->withQueryString()->links() !!}
                 </div>
             </div>
         </div>

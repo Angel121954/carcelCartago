@@ -8,49 +8,47 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <!-- TARJETAS -->
-            <div class="grid grid-cols-4 gap-4 mb-6">
-
-                <div class="bg-blue-500 text-white p-4 rounded shadow">
-                    <h3>Prisioneros</h3>
-                    <p class="text-2xl">{{ $prisioneros }}</p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-bottom:24px;">
+                <div style="background:#0f172a; color:#fff; padding:20px; border-radius:14px; box-shadow:0 8px 20px rgba(15,23,42,.14);">
+                    <p style="margin:0; font-size:14px; opacity:.8;">Prisioneros</p>
+                    <p style="margin:8px 0 0; font-size:34px; font-weight:800; line-height:1;">{{ $prisioneros }}</p>
                 </div>
 
-                <div class="bg-green-500 text-white p-4 rounded shadow">
-                    <h3>Visitantes</h3>
-                    <p class="text-2xl">{{ $visitantes }}</p>
+                <div style="background:#14532d; color:#fff; padding:20px; border-radius:14px; box-shadow:0 8px 20px rgba(20,83,45,.14);">
+                    <p style="margin:0; font-size:14px; opacity:.85;">Visitantes</p>
+                    <p style="margin:8px 0 0; font-size:34px; font-weight:800; line-height:1;">{{ $visitantes }}</p>
                 </div>
 
-                <div class="bg-yellow-500 text-white p-4 rounded shadow">
-                    <h3>Visitas</h3>
-                    <p class="text-2xl">{{ $visitas }}</p>
+                <div style="background:#7c2d12; color:#fff; padding:20px; border-radius:14px; box-shadow:0 8px 20px rgba(124,45,18,.14);">
+                    <p style="margin:0; font-size:14px; opacity:.85;">Visitas</p>
+                    <p style="margin:8px 0 0; font-size:34px; font-weight:800; line-height:1;">{{ $visitas }}</p>
                 </div>
 
-                @if(auth()->user()->role == 'admin')
-                <a href="{{ route('admin.guardias.index') }}" class="bg-red-600 text-white px-4 py-2 rounded">
-                    Gestionar Guardias
-                </a>
+                @if(auth()->user()?->isAdmin())
+                    <a href="{{ route('admin.guardias.index') }}" style="background:#b91c1c; color:#fff; padding:20px; border-radius:14px; box-shadow:0 8px 20px rgba(185,28,28,.14); text-decoration:none; display:block;">
+                        <p style="margin:0; font-size:14px; opacity:.9;">Guardias</p>
+                        <p style="margin:8px 0 0; font-size:20px; font-weight:700; line-height:1.2;">Gestionar Guardias</p>
+                    </a>
                 @endif
-
             </div>
 
             <!-- BOTONES -->
-            <div class="mb-6 flex gap-4">
-                <a href="{{ route('visitas.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded">
+            <div class="mb-6 flex flex-wrap gap-4">
+                <a href="{{ route('visitas.create') }}" style="background:#4f46e5; color:#fff; padding:10px 16px; border-radius:10px; text-decoration:none;">
                     Nueva Visita
                 </a>
 
                 @if(auth()->user()?->isAdmin())
-                <a href="{{ route('admin.reportes.index') }}" class="bg-red-600 text-white px-4 py-2 rounded">
+                <a href="{{ route('admin.reportes.index') }}" style="background:#dc2626; color:#fff; padding:10px 16px; border-radius:10px; text-decoration:none;">
                     Informes
                 </a>
                 @endif
 
-                <a href="{{ route('prisioneros.index') }}" class="bg-gray-600 text-white px-4 py-2 rounded">
+                <a href="{{ route('prisioneros.index') }}" style="background:#374151; color:#fff; padding:10px 16px; border-radius:10px; text-decoration:none;">
                     Ver Prisioneros
                 </a>
 
-                <a href="{{ route('visitantes.index') }}" class="bg-gray-600 text-white px-4 py-2 rounded">
+                <a href="{{ route('visitantes.index') }}" style="background:#374151; color:#fff; padding:10px 16px; border-radius:10px; text-decoration:none;">
                     Ver Visitantes
                 </a>
             </div>
@@ -58,32 +56,32 @@
             <!-- TABLA -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
+                    <h2 class="text-xl mb-4 text-gray-900 font-semibold">Últimas Visitas</h2>
 
-                    <h2 class="text-xl mb-4">Últimas Visitas</h2>
-
-                    <table class="table-auto w-full border">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="p-2">Prisionero</th>
-                                <th class="p-2">Visitante</th>
-                                <th class="p-2">Guardia</th>
-                                <th class="p-2">Fecha</th>
-                                <th class="p-2">Hora</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($ultimasVisitas as $v)
-                            <tr class="border-t">
-                                <td class="p-2">{{ $v->prisionero->nombre_completo }}</td>
-                                <td class="p-2">{{ $v->visitante->nombre_completo }}</td>
-                                <td class="p-2">{{ $v->guardia->nombre_completo }}</td>
-                                <td class="p-2">{{ $v->fecha }}</td>
-                                <td class="p-2">{{ $v->hora_inicio }} - {{ $v->hora_fin }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
+                    <div class="overflow-x-auto">
+                        <table class="table-auto w-full border-collapse">
+                            <thead>
+                                <tr style="background:#e5e7eb; color:#111827;">
+                                    <th class="p-3 text-left">Prisionero</th>
+                                    <th class="p-3 text-left">Visitante</th>
+                                    <th class="p-3 text-left">Guardia</th>
+                                    <th class="p-3 text-left">Fecha</th>
+                                    <th class="p-3 text-left">Hora</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($ultimasVisitas as $v)
+                                <tr style="border-top:1px solid #e5e7eb;">
+                                    <td class="p-3 text-gray-900">{{ $v->prisionero->nombre_completo }}</td>
+                                    <td class="p-3 text-gray-900">{{ $v->visitante->nombre_completo }}</td>
+                                    <td class="p-3 text-gray-900">{{ $v->guardia->nombre_completo }}</td>
+                                    <td class="p-3 text-gray-900">{{ $v->fecha }}</td>
+                                    <td class="p-3 text-gray-900">{{ $v->hora_inicio }} - {{ $v->hora_fin }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 

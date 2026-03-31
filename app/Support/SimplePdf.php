@@ -28,26 +28,26 @@ class SimplePdf
 
         $objects[2] = '<< /Type /Pages /Kids ['.implode(' ', $kids).'] /Count '.count($chunks).' >>';
 
-        $pdf = "%PDF-1.4\n";
+        $pdf = "%PDF-1.4\n%\xE2\xE3\xCF\xD3\n";
         $offsets = [0];
 
         ksort($objects);
         foreach ($objects as $id => $body) {
             $offsets[$id] = strlen($pdf);
-            $pdf .= $id.' 0 obj\n'.$body."\nendobj\n";
+            $pdf .= $id." 0 obj\n".$body."\nendobj\n";
         }
 
         $xrefPosition = strlen($pdf);
         $maxId = max(array_keys($objects));
 
-        $pdf .= 'xref\n0 '.($maxId + 1)."\n";
+        $pdf .= "xref\n0 ".($maxId + 1)."\n";
         $pdf .= "0000000000 65535 f \n";
         for ($id = 1; $id <= $maxId; $id++) {
-            $pdf .= sprintf('%010d 00000 n %s', $offsets[$id] ?? 0, "\n");
+            $pdf .= sprintf('%010d 00000 n'."\n", $offsets[$id] ?? 0);
         }
 
-        $pdf .= 'trailer << /Size '.($maxId + 1).' /Root 1 0 R >>\n';
-        $pdf .= 'startxref\n'.$xrefPosition."\n%%EOF";
+        $pdf .= 'trailer << /Size '.($maxId + 1)." /Root 1 0 R >>\n";
+        $pdf .= "startxref\n".$xrefPosition."\n%%EOF";
 
         return $pdf;
     }
@@ -84,7 +84,7 @@ class SimplePdf
 
         $stream = implode("\n", $lines);
 
-        return '<< /Length '.strlen($stream).' >>\nstream\n'.$stream."\nendstream";
+        return '<< /Length '.strlen($stream)." >>\nstream\n".$stream."\nendstream";
     }
 
     private static function textBlock(int $x, int $y, int $fontSize, string $text): string
