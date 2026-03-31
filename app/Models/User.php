@@ -55,6 +55,6 @@ class User extends Authenticatable
 
     public function guardia()
     {
-        return $this->hasOne(\App\Models\Guardia::class);
+        return $this->hasOne(Guardia::class, 'nombre_completo', 'name');
     }
 }

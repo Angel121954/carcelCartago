@@ -6,69 +6,62 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-full mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="w-full">
-                    <div class="sm:flex sm:items-center">
-                        <div class="sm:flex-auto">
-                            <h1 class="text-base font-semibold leading-6 text-gray-900">{{ __('Visitas') }}</h1>
-                            <p class="mt-2 text-sm text-gray-700">A list of all the {{ __('Visitas') }}.</p>
-                        </div>
-                        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                            <a type="button" href="{{ route('visitas.create') }}" class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add new</a>
-                        </div>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px;">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">{{ __('Visitas') }}</h1>
+                        <p class="text-sm text-gray-600">Listado general de visitas registradas</p>
                     </div>
 
-                    <div class="flow-root">
-                        <div class="mt-8 overflow-x-auto">
-                            <div class="inline-block min-w-full py-2 align-middle">
-                                <table class="w-full divide-y divide-gray-300">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">No</th>
-                                        
-									<th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Prisionero Id</th>
-									<th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Visitante Id</th>
-									<th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Guardia Id</th>
-									<th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Fecha</th>
-									<th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Hora Inicio</th>
-									<th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Hora Fin</th>
+                    <a href="{{ route('visitas.create') }}" style="display:inline-flex; align-items:center; justify-content:center; background:#4f46e5; color:#fff; padding:12px 18px; border-radius:10px; font-weight:700; text-decoration:none; box-shadow:0 8px 16px rgba(79,70,229,.18);">
+                        + Nueva visita
+                    </a>
+                </div>
 
-                                        <th scope="col" class="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200 bg-white">
-                                    @foreach ($visitas as $visita)
-                                        <tr class="even:bg-gray-50">
-                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-gray-900">{{ ++$i }}</td>
-                                            
-										<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $visita->prisionero_id }}</td>
-										<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $visita->visitante_id }}</td>
-										<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $visita->guardia_id }}</td>
-										<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $visita->fecha }}</td>
-										<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $visita->hora_inicio }}</td>
-										<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $visita->hora_fin }}</td>
+                <div class="overflow-x-auto" style="border:1px solid #e5e7eb; border-radius:12px;">
+                    <table class="min-w-full" style="border-collapse:collapse; min-width:980px;">
+                        <thead>
+                            <tr style="background:#f3f4f6; color:#111827;">
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">No</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">Prisionero</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">Visitante</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">Guardia</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">Fecha</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">Hora Inicio</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide">Hora Fin</th>
+                                <th class="py-3 px-4 text-left text-xs font-semibold uppercase tracking-wide" style="width:1%; white-space:nowrap;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($visitas as $visita)
+                                <tr style="border-top:1px solid #e5e7eb;">
+                                    <td class="py-4 px-4 text-sm font-semibold text-gray-900">{{ ++$i }}</td>
+                                    <td class="py-4 px-4 text-sm text-gray-900">{{ $visita->prisionero?->nombre_completo ?? $visita->prisionero_id }}</td>
+                                    <td class="py-4 px-4 text-sm text-gray-900">{{ $visita->visitante?->nombre_completo ?? $visita->visitante_id }}</td>
+                                    <td class="py-4 px-4 text-sm text-gray-900">{{ $visita->guardia?->nombre_completo ?? $visita->guardia_id }}</td>
+                                    <td class="py-4 px-4 text-sm text-gray-900">{{ $visita->fecha }}</td>
+                                    <td class="py-4 px-4 text-sm text-gray-900">{{ $visita->hora_inicio }}</td>
+                                    <td class="py-4 px-4 text-sm text-gray-900">{{ $visita->hora_fin }}</td>
+                                    <td class="py-4 px-4 text-sm" style="width:1%; white-space:nowrap;">
+                                        <div style="display:inline-flex; flex-wrap:nowrap; gap:8px; align-items:center;">
+                                            <a href="{{ route('visitas.show', $visita->id) }}" style="background:#e5e7eb; color:#111827; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:600;">Ver</a>
+                                            <a href="{{ route('visitas.edit', $visita->id) }}" style="background:#2563eb; color:#fff; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:600;">Editar</a>
+                                            <form action="{{ route('visitas.destroy', $visita->id) }}" method="POST" style="display:inline; margin:0;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" style="background:#dc2626; color:#fff; padding:8px 12px; border:0; border-radius:8px; font-weight:600; cursor:pointer;" onclick="return confirm('Are you sure to delete?')">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
-                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
-                                                <form action="{{ route('visitas.destroy', $visita->id) }}" method="POST">
-                                                    <a href="{{ route('visitas.show', $visita->id) }}" class="text-gray-600 font-bold hover:text-gray-900 mr-2">{{ __('Show') }}</a>
-                                                    <a href="{{ route('visitas.edit', $visita->id) }}" class="text-indigo-600 font-bold hover:text-indigo-900  mr-2">{{ __('Edit') }}</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <a href="{{ route('visitas.destroy', $visita->id) }}" class="text-red-600 font-bold hover:text-red-900" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">{{ __('Delete') }}</a>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-
-                                <div class="mt-4 px-4">
-                                    {!! $visitas->withQueryString()->links() !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="mt-4">
+                    {!! $visitas->withQueryString()->links() !!}
                 </div>
             </div>
         </div>
