@@ -39,7 +39,7 @@ class GuardiaController extends Controller
     {
         Guardia::create($request->validated());
 
-        return Redirect::route('guardias.index')
+        return Redirect::route('admin.guardias.index')
             ->with('success', 'Guardia created successfully.');
     }
 
@@ -70,7 +70,7 @@ class GuardiaController extends Controller
     {
         $guardia->update($request->validated());
 
-        return Redirect::route('guardias.index')
+        return Redirect::route('admin.guardias.index')
             ->with('success', 'Guardia updated successfully');
     }
 
@@ -78,7 +78,7 @@ class GuardiaController extends Controller
     {
         Guardia::find($id)->delete();
 
-        return Redirect::route('guardias.index')
+        return Redirect::route('admin.guardias.index')
             ->with('success', 'Guardia deleted successfully');
     }
 }

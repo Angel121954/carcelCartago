@@ -32,6 +32,21 @@ class ReporteController extends Controller
         ]);
     }
 
+    public function pdfView(Request $request)
+    {
+        $data = $this->buildReportData($request);
+
+        return response(SimplePdf::fromRows(
+            $data['title'],
+            $data['meta_lines'],
+            $data['headers'],
+            $data['pdf_rows']
+        ), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$data['filename'].'.pdf"',
+        ]);
+    }
+
     public function excel(Request $request)
     {
         $data = $this->buildReportData($request);
@@ -40,6 +55,11 @@ class ReporteController extends Controller
             'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
             'Content-Disposition' => 'attachment; filename="'.$data['filename'].'.xls"',
         ]);
+    }
+
+    public function excelView(Request $request)
+    {
+        return view('reportes.excel', $this->buildReportData($request));
     }
 
     private function buildReportData(Request $request): array

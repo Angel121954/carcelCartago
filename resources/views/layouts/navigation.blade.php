@@ -15,6 +15,16 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @if(auth()->user()?->isAdmin())
+                        <x-nav-link :href="route('admin.guardias.index')" :active="request()->routeIs('admin.guardias.*')">
+                            {{ __('Guardias') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.reportes.index')" :active="request()->routeIs('admin.reportes.*')">
+                            {{ __('Informes') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -70,6 +80,16 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @if(auth()->user()?->isAdmin())
+                <x-responsive-nav-link :href="route('admin.guardias.index')" :active="request()->routeIs('admin.guardias.*')">
+                    {{ __('Guardias') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('admin.reportes.index')" :active="request()->routeIs('admin.reportes.*')">
+                    {{ __('Informes') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

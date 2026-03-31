@@ -27,7 +27,7 @@
                 </div>
 
                 @if(auth()->user()->role == 'admin')
-                <a href="{{ route('guardias.index') }}" class="bg-red-600 text-white px-4 py-2 rounded">
+                <a href="{{ route('admin.guardias.index') }}" class="bg-red-600 text-white px-4 py-2 rounded">
                     Gestionar Guardias
                 </a>
                 @endif
@@ -39,6 +39,12 @@
                 <a href="{{ route('visitas.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded">
                     Nueva Visita
                 </a>
+
+                @if(auth()->user()?->isAdmin())
+                <a href="{{ route('admin.reportes.index') }}" class="bg-red-600 text-white px-4 py-2 rounded">
+                    Informes
+                </a>
+                @endif
 
                 <a href="{{ route('prisioneros.index') }}" class="bg-gray-600 text-white px-4 py-2 rounded">
                     Ver Prisioneros
