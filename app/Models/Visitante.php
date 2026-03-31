@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Visitante
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Visitante extends Model
 {
-    
+    use HasFactory;
     protected $perPage = 20;
 
     /**
@@ -36,7 +37,6 @@ class Visitante extends Model
      */
     public function visitas()
     {
-        return $this->hasMany(\App\Models\Visita::class, 'id', 'visitante_id');
+        return $this->hasMany(\App\Models\Visita::class, 'visitante_id', 'id');
     }
-    
 }

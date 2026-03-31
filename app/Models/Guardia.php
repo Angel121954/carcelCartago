@@ -3,49 +3,36 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-/**
- * Class Guardia
- *
- * @property $id
- * @property $nombre_completo
- * @property $numero_identificacion
- * @property $activo
- * @property $created_at
- * @property $updated_at
- *
- * @property SesionGuardia[] $sesionGuardias
- * @property Visita[] $visitas
- * @package App
- * @mixin \Illuminate\Database\Eloquent\Builder
- */
 class Guardia extends Model
 {
-    
+    use HasFactory;
+
     protected $perPage = 20;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = ['nombre_completo', 'numero_identificacion', 'activo'];
+    protected $fillable = [
+        'nombre_completo',
+        'numero_identificacion',
+        'activo',
+        'user_id' // IMPORTANTE
+    ];
 
+    //  RELACIÓN CON USER
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+    //  RELACIÓN CON SESIONES
     public function sesionGuardias()
     {
-        return $this->hasMany(\App\Models\SesionGuardia::class, 'id', 'guardia_id');
+        return $this->hasMany(\App\Models\SesionGuardia::class, 'guardia_id', 'id');
     }
-    
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+
+    //  RELACIÓN CON VISITAS
     public function visitas()
     {
-        return $this->hasMany(\App\Models\Visita::class, 'id', 'guardia_id');
+        return $this->hasMany(\App\Models\Visita::class, 'guardia_id', 'id');
     }
-    
 }

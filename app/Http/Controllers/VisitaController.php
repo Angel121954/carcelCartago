@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\VisitaRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class VisitaController extends Controller
 {
@@ -35,12 +36,16 @@ class VisitaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(VisitaRequest $request): RedirectResponse
+    public function store(VisitaRequest $request)
     {
-        Visita::create($request->validated());
+        $data = $request->validated();
 
-        return Redirect::route('visitas.index')
-            ->with('success', 'Visita created successfully.');
+        //  aquí asignas el guardia automáticamente
+        $data['guardia_id'] = Auth::user()->guardia->id;
+        Visita::create($data);
+
+        return redirect()->route('visitas.index')
+            ->with('success', 'Visita creada correctamente');
     }
 
     /**
