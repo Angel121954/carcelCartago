@@ -26,25 +26,26 @@
                     <p class="text-2xl">{{ $visitas }}</p>
                 </div>
 
-                <div class="bg-red-500 text-white p-4 rounded shadow">
-                    <h3>Guardias</h3>
-                    <p class="text-2xl">{{ $guardias }}</p>
-                </div>
+                @if(auth()->user()->role == 'admin')
+                <a href="{{ route('guardias.index') }}" class="bg-red-600 text-white px-4 py-2 rounded">
+                    Gestionar Guardias
+                </a>
+                @endif
 
             </div>
 
             <!-- BOTONES -->
             <div class="mb-6 flex gap-4">
                 <a href="{{ route('visitas.create') }}" class="bg-indigo-600 text-white px-4 py-2 rounded">
-                     Nueva Visita
+                    Nueva Visita
                 </a>
 
                 <a href="{{ route('prisioneros.index') }}" class="bg-gray-600 text-white px-4 py-2 rounded">
-                     Ver Prisioneros
+                    Ver Prisioneros
                 </a>
 
                 <a href="{{ route('visitantes.index') }}" class="bg-gray-600 text-white px-4 py-2 rounded">
-                     Ver Visitantes
+                    Ver Visitantes
                 </a>
             </div>
 

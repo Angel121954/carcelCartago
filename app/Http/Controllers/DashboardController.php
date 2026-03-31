@@ -15,7 +15,13 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
+        //  Seguridad básica
+        if (!in_array($user->role, ['admin', 'guardia'])) {
+            abort(403);
+        }
+
         if ($user->role == 'admin') {
+
             $ultimasVisitas = Visita::with(['prisionero', 'visitante', 'guardia'])
                 ->latest()
                 ->take(5)
@@ -23,7 +29,13 @@ class DashboardController extends Controller
 
             $visitas = Visita::count();
         } else {
-            $guardiaId = $user->guardia->id;  // EL  ID ES CLAVE PARA OBTENER LAS VISITAS RELACIONADAS CON EL GUARDIA LOGUEADO
+
+            //  evitar error si no tiene guardia
+            if (!$user->guardia) {
+                abort(403, 'No tienes perfil de guardia');
+            }
+
+            $guardiaId = $user->guardia->id;
 
             $ultimasVisitas = Visita::with(['prisionero', 'visitante', 'guardia'])
                 ->where('guardia_id', $guardiaId)
