@@ -15,24 +15,15 @@ class Guardia extends Model
         'nombre_completo',
         'numero_identificacion',
         'activo',
-        'user_id' // IMPORTANTE
     ];
 
-    //  RELACIÓN CON USER
-    public function user()
-    {
-        return $this->belongsTo(\App\Models\User::class);
-    }
-
-    //  RELACIÓN CON SESIONES
     public function sesionGuardias()
     {
-        return $this->hasMany(\App\Models\SesionGuardia::class, 'guardia_id', 'id');
+        return $this->hasMany(SesionGuardia::class, 'guardia_id', 'id');
     }
 
-    //  RELACIÓN CON VISITAS
     public function visitas()
     {
-        return $this->hasMany(\App\Models\Visita::class, 'guardia_id', 'id');
+        return $this->hasMany(Visita::class, 'guardia_id', 'id');
     }
 }

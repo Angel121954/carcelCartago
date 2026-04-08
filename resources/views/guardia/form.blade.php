@@ -18,33 +18,7 @@
         <x-input-error class="mt-2" :messages="$errors->get('numero_identificacion')"/>
     </div>
 
-    {{-- Campos solo para creación (el guardia necesita un User para iniciar sesión) --}}
-    @if(! $guardia?->exists)
-        <div>
-            <x-input-label for="email" :value="__('Correo electrónico (para inicio de sesión)')"/>
-            <x-text-input id="email" name="email" type="email"
-                class="mt-1 block w-full"
-                :value="old('email')"
-                placeholder="correo@ejemplo.com"/>
-            <x-input-error class="mt-2" :messages="$errors->get('email')"/>
-        </div>
-
-        <div>
-            <x-input-label for="password" :value="__('Contraseña')"/>
-            <x-text-input id="password" name="password" type="password"
-                class="mt-1 block w-full"
-                placeholder="Mínimo 8 caracteres"/>
-            <x-input-error class="mt-2" :messages="$errors->get('password')"/>
-        </div>
-
-        <div>
-            <x-input-label for="password_confirmation" :value="__('Confirmar Contraseña')"/>
-            <x-text-input id="password_confirmation" name="password_confirmation" type="password"
-                class="mt-1 block w-full"
-                placeholder="Repite la contraseña"/>
-        </div>
-    @else
-        {{-- En edición se puede activar/desactivar --}}
+    @if($guardia?->exists)
         <div>
             <x-input-label :value="__('Estado')"/>
             <div class="mt-2 flex items-center gap-3">

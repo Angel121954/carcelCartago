@@ -35,7 +35,13 @@
                                 </div>
                                 <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt class="text-sm font-medium leading-6 text-gray-900">Activo</dt>
-                                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $guardia->activo }}</dd>
+                                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                                        @if($guardia->activo)
+                                            <span style="display:inline-flex; padding:4px 10px; border-radius:9999px; background:#dcfce7; color:#166534; font-weight:700; font-size:12px;">Activo</span>
+                                        @else
+                                            <span style="display:inline-flex; padding:4px 10px; border-radius:9999px; background:#fee2e2; color:#991b1b; font-weight:700; font-size:12px;">Inactivo</span>
+                                        @endif
+                                    </dd>
                                 </div>
 
                                     </dl>

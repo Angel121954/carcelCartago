@@ -50,7 +50,7 @@
                                             <form action="{{ route('admin.guardias.destroy', $guardia->id) }}" method="POST" style="display:inline; margin:0;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" style="background:#dc2626; color:#fff; padding:8px 12px; border:0; border-radius:8px; font-weight:600; cursor:pointer;" onclick="return confirm('Are you sure to delete?')">Eliminar</button>
+                                                <button type="submit" style="background:#dc2626; color:#fff; padding:8px 12px; border:0; border-radius:8px; font-weight:600; cursor:pointer;" onclick="return confirm('¿Dar de baja a este guardia?')">Dar de baja</button>
                                             </form>
                                         </div>
                                     </td>
