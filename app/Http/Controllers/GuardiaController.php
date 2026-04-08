@@ -27,10 +27,18 @@ class GuardiaController extends Controller
 
     public function store(GuardiaRequest $request): RedirectResponse
     {
+        $accountRepeated = Guardia::where('numero_identificacion', $request->numero_identificacion)->count();
+
+        if ($accountRepeated) {
+            return Redirect::route('admin.guardias.create')
+                ->withInput()
+                ->with('error', 'Ya existe un guardia con este número de identificación.');
+        }
+
         Guardia::create($request->validated());
 
         return Redirect::route('admin.guardias.index')
-            ->with('success', 'Guardia creado correctamente.');
+            ->with('success', 'Guardia registrado exitosamente.');
     }
 
     public function show($id): View
@@ -50,7 +58,7 @@ class GuardiaController extends Controller
         $guardia->update($request->validated());
 
         return Redirect::route('admin.guardias.index')
-            ->with('success', 'Guardia actualizado correctamente.');
+            ->with('success', 'Guardia actualizado exitosamente.');
     }
 
     /**
@@ -62,6 +70,6 @@ class GuardiaController extends Controller
         $guardia->update(['activo' => false]);
 
         return Redirect::route('admin.guardias.index')
-            ->with('success', 'Guardia dado de baja correctamente.');
+            ->with('success', "Guardia #{$guardia->numero_identificacion} dado de baja correctamente.");
     }
 }

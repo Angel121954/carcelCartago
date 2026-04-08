@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\Guardia;
 
 //  IMPORTANTE
 use App\Models\SesionGuardia;
@@ -22,20 +23,31 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        //  GUARDAR SESIÓN DEL GUARDIA
-        if (Auth::user()->role == 'guardia' && Auth::user()->guardia) {
+        if (Auth::user()->role == 'guardia') {
+            $guardiaInactivo = Guardia::where('activo', false)
+                ->where('numero_identificacion', $request->numero_identificacion)
+                ->count();
 
+            if ($guardiaInactivo) {
+                return redirect()->intended(route('dashboard'))
+                    ->with('error', 'Este guardia está inactivo y no puede iniciar sesión.');
+            }
+        }
+
+        // Guardar sesión del guardia
+        if (Auth::user()->role == 'guardia' && Auth::user()->guardia) {
             SesionGuardia::create([
                 'guardia_id' => Auth::user()->guardia->id,
                 'fecha_hora_inicio' => now(),
             ]);
         }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('dashboard', absolute: false))
+            ->with('success', 'Inicio de sesión exitoso.');
     }
+
 
     public function destroy(Request $request): RedirectResponse
     {
