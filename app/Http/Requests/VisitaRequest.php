@@ -61,14 +61,17 @@ class VisitaRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-
-            $existe = \App\Models\Visita::where('prisionero_id', $this->prisionero_id)
+            $query = \App\Models\Visita::where('prisionero_id', $this->prisionero_id)
                 ->where('fecha', $this->fecha)
-                ->where('hora_inicio', $this->hora_inicio)
-                ->exists();
+                ->where('hora_inicio', $this->hora_inicio);
 
-            if ($existe) {
-                $validator->errors()->add('hora_inicio', 'Este prisionero ya tiene una visita en ese horario.');
+            // En edición excluir el propio registro
+            if ($this->route('visita')) {
+                $query->where('id', '!=', $this->route('visita')->id);
+            }
+
+            if ($query->exists()) {
+                $validator->errors()->add('hora_inicio', 'Este prisionero ya tiene una visita en ese horario y fecha.');
             }
         });
     }

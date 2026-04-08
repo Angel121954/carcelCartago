@@ -3,82 +3,89 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guardia;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\GuardiaRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class GuardiaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request): View
     {
-        $guardias = Guardia::paginate();
+        $guardias = Guardia::with('user')->paginate();
 
         return view('guardia.index', compact('guardias'))
             ->with('i', ($request->input('page', 1) - 1) * $guardias->perPage());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(): View
     {
         $guardia = new Guardia();
-
         return view('guardia.create', compact('guardia'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(GuardiaRequest $request): RedirectResponse
     {
-        Guardia::create($request->validated());
+        // Crear el User que usará el guardia para iniciar sesión
+        $user = User::create([
+            'name'     => $request->nombre_completo,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'role'     => 'guardia',
+        ]);
+
+        Guardia::create([
+            'nombre_completo'     => $request->nombre_completo,
+            'numero_identificacion' => $request->numero_identificacion,
+            'activo'              => true,
+            'user_id'             => $user->id,
+        ]);
 
         return Redirect::route('admin.guardias.index')
-            ->with('success', 'Guardia created successfully.');
+            ->with('success', 'Guardia creado correctamente. Puede iniciar sesión con el email registrado.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id): View
     {
-        $guardia = Guardia::find($id);
-
+        $guardia = Guardia::with('user')->findOrFail($id);
         return view('guardia.show', compact('guardia'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id): View
     {
-        $guardia = Guardia::find($id);
-
+        $guardia = Guardia::findOrFail($id);
         return view('guardia.edit', compact('guardia'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(GuardiaRequest $request, Guardia $guardia): RedirectResponse
     {
-        $guardia->update($request->validated());
+        $guardia->update([
+            'nombre_completo'       => $request->nombre_completo,
+            'numero_identificacion' => $request->numero_identificacion,
+            'activo'                => $request->boolean('activo'),
+        ]);
+
+        // Actualizar nombre en el User asociado
+        if ($guardia->user) {
+            $guardia->user->update(['name' => $request->nombre_completo]);
+        }
 
         return Redirect::route('admin.guardias.index')
-            ->with('success', 'Guardia updated successfully');
+            ->with('success', 'Guardia actualizado correctamente.');
     }
 
+    /**
+     * Dar de baja (desactivar) al guardia en lugar de eliminarlo físicamente.
+     */
     public function destroy($id): RedirectResponse
     {
-        Guardia::find($id)->delete();
+        $guardia = Guardia::findOrFail($id);
+        $guardia->update(['activo' => false]);
 
         return Redirect::route('admin.guardias.index')
-            ->with('success', 'Guardia deleted successfully');
+            ->with('success', 'Guardia dado de baja correctamente.');
     }
 }

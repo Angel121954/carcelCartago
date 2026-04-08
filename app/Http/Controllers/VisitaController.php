@@ -29,8 +29,10 @@ class VisitaController extends Controller
     public function create(): View
     {
         $visita = new Visita();
+        $prisioneros = \App\Models\Prisionero::orderBy('nombre_completo')->get();
+        $visitantes  = \App\Models\Visitante::orderBy('nombre_completo')->get();
 
-        return view('visita.create', compact('visita'));
+        return view('visita.create', compact('visita', 'prisioneros', 'visitantes'));
     }
 
     /**
@@ -63,9 +65,11 @@ class VisitaController extends Controller
      */
     public function edit($id): View
     {
-        $visita = Visita::find($id);
+        $visita = Visita::findOrFail($id);
+        $prisioneros = \App\Models\Prisionero::orderBy('nombre_completo')->get();
+        $visitantes  = \App\Models\Visitante::orderBy('nombre_completo')->get();
 
-        return view('visita.edit', compact('visita'));
+        return view('visita.edit', compact('visita', 'prisioneros', 'visitantes'));
     }
 
     /**

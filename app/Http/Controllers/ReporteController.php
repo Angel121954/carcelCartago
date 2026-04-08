@@ -28,7 +28,7 @@ class ReporteController extends Controller
             $data['pdf_rows']
         ), 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="'.$data['filename'].'.pdf"',
+            'Content-Disposition' => 'attachment; filename="' . $data['filename'] . '.pdf"',
         ]);
     }
 
@@ -43,7 +43,7 @@ class ReporteController extends Controller
             $data['pdf_rows']
         ), 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$data['filename'].'.pdf"',
+            'Content-Disposition' => 'inline; filename="' . $data['filename'] . '.pdf"',
         ]);
     }
 
@@ -53,7 +53,7 @@ class ReporteController extends Controller
 
         return response(view('reportes.excel', $data)->render(), 200, [
             'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="'.$data['filename'].'.xls"',
+            'Content-Disposition' => 'attachment; filename="' . $data['filename'] . '.xls"',
         ]);
     }
 
@@ -86,7 +86,7 @@ class ReporteController extends Controller
         $visitas = $query->get();
         $prisioneros = Prisionero::orderBy('nombre_completo')->get();
 
-        $pdfRows = $visitas->map(fn (Visita $visita) => [
+        $pdfRows = $visitas->map(fn(Visita $visita) => [
             (string) $visita->id,
             $visita->prisionero?->nombre_completo ?? '-',
             $visita->visitante?->nombre_completo ?? '-',
@@ -97,15 +97,15 @@ class ReporteController extends Controller
         ])->all();
 
         $title = $prisioneroId ? 'Historial de visitas por prisionero' : 'Reporte de visitas de prisioneros y visitantes';
-        $filename = $prisioneroId ? 'historial_visitas_prisionero_'.$prisioneroId : 'reporte_visitas_general';
+        $filename = $prisioneroId ? 'historial_visitas_prisionero_' . $prisioneroId : 'reporte_visitas_general';
 
         $metaLines = [
-            'Rango: '.$fechaInicio->format('d/m/Y').' al '.$fechaFin->format('d/m/Y'),
-            'Total visitas: '.$visitas->count(),
+            'Rango: ' . $fechaInicio->format('d/m/Y') . ' al ' . $fechaFin->format('d/m/Y'),
+            'Total visitas: ' . $visitas->count(),
         ];
 
         if ($prisioneroId) {
-            $metaLines[] = 'Prisionero: '.optional($prisioneros->firstWhere('id', (int) $prisioneroId))->nombre_completo;
+            $metaLines[] = 'Prisionero: ' . optional($prisioneros->firstWhere('id', (int) $prisioneroId))->nombre_completo;
         }
 
         return [
